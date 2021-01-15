@@ -103,7 +103,7 @@ public class Register extends AppCompatActivity {
              user.put("name",name);
              user.put("email",email);
              user.put("phone",phone);
-             user.put("password",password);;
+             user.put("password",password);
 
              FirebaseFirestore.getInstance().collection("users").document(authResult.getUser().getUid()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                  @Override

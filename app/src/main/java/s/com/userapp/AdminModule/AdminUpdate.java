@@ -1,4 +1,4 @@
-package s.com.userapp.MainDashboard;
+package s.com.userapp.AdminModule;
 
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -20,30 +20,28 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 
-import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import s.com.userapp.MainDashboard.Model.PostModel;
+import s.com.userapp.MainDashboard.UpdateFragment;
 import s.com.userapp.R;
 import s.com.userapp.Registration.Login;
-import s.com.userapp.databinding.FragmentUpdateBinding;
+import s.com.userapp.databinding.FragmentAdminUpdateBinding;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UpdateFragment#newInstance} factory method to
+ * Use the {@link AdminUpdate#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UpdateFragment extends Fragment {
+public class AdminUpdate extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,21 +51,28 @@ public class UpdateFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    FragmentUpdateBinding binding;
+
+    FragmentAdminUpdateBinding binding;
     String callTime="";
     ProgressDialog progressDialog;
-
-
-    public UpdateFragment() {
+    public AdminUpdate() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment AdminUpdate.
+     */
     // TODO: Rename and change types and number of parameters
-    public static UpdateFragment newInstance(String id) {
-        UpdateFragment fragment = new UpdateFragment();
+    public static AdminUpdate newInstance(String param1, String param2) {
+        AdminUpdate fragment = new AdminUpdate();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, id);
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,7 +89,8 @@ public class UpdateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding=FragmentUpdateBinding.inflate(inflater,container,false);
+        binding=FragmentAdminUpdateBinding.inflate(inflater,container,false);
+
         progressDialog=new ProgressDialog(getContext());
         progressDialog.setCancelable(false);
         progressDialog.setTitle("Update Post");
@@ -113,6 +119,7 @@ public class UpdateFragment extends Fragment {
             }
         });
 
+
         return binding.getRoot();
     }
 
@@ -122,16 +129,16 @@ public class UpdateFragment extends Fragment {
         FirebaseFirestore.getInstance().collection("posts").document(mParam1).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-             if (error!=null)
-             {
-                 return;
-             }
+                if (error!=null)
+                {
+                    return;
+                }
 
                 PostModel model=value.toObject(PostModel.class);
-             model.setPostId(value.getId());
+                model.setPostId(value.getId());
 
-             binding.etPostName.setText(model.getPostTitle());
-             binding.etName.setText(model.getName());
+                binding.etPostName.setText(model.getPostTitle());
+                binding.etName.setText(model.getName());
                 binding.etEmail.setText(model.getEmail());
                 binding.etPhone.setText(model.getPhone());
                 binding.etSkype.setText(model.getSkypeId());
@@ -200,11 +207,11 @@ public class UpdateFragment extends Fragment {
         map.put("callTime",callTime);
         map.put("costRange",costRange);
         map.put("discription",discription);
-        FirebaseFirestore.getInstance().collection("posts").document(mParam1).set(map,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        FirebaseFirestore.getInstance().collection("posts").document(mParam1).set(map, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 progressDialog.dismiss();
-                NavHostFragment.findNavController(UpdateFragment.this)
+                NavHostFragment.findNavController(AdminUpdate.this)
                         .navigate(R.id.action_updatetoHome);
             }
         }).addOnFailureListener(new OnFailureListener() {

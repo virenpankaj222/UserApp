@@ -1,12 +1,17 @@
 package s.com.userapp.MainDashboard.Model;
 
+import java.util.List;
+
+import s.com.userapp.MainDashboard.Full_Details.CommentModel;
+
 public class PostModel {
     String postId,userId,postTitle,name,email,phone,skypeId,telegram,callDate,callTime,costRange,discription;
+    List<CommentModel> comments;
 
     public PostModel() {
     }
 
-    public PostModel(String postId, String userId, String postTitle, String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription) {
+    public PostModel(String postId, String userId, String postTitle, String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription,List<CommentModel> comments) {
         this.postId = postId;
         this.userId = userId;
         this.postTitle = postTitle;
@@ -19,6 +24,7 @@ public class PostModel {
         this.callTime = callTime;
         this.costRange = costRange;
         this.discription = discription;
+        this.comments=comments;
     }
 
     public String getPostId() {
@@ -115,5 +121,13 @@ public class PostModel {
 
     public void setDiscription(String discription) {
         this.discription = discription;
+    }
+
+    public List<CommentModel> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentModel> comments) {
+        this.comments = comments;
     }
 }

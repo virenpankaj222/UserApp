@@ -20,10 +20,13 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import s.com.userapp.MainDashboard.Full_Details.CommentModel;
 import s.com.userapp.Registration.Login;
 import s.com.userapp.databinding.ActivityAddPostBinding;
 
@@ -112,7 +115,7 @@ public class AddPost extends AppCompatActivity {
             return;
         }
 
-        Map<String, String> map=new HashMap<>();
+        Map<String, Object> map=new HashMap<>();
         map.put("userId",FirebaseAuth.getInstance().getCurrentUser().getUid());
         map.put("postTitle",postTitle);
         map.put("name",name);
@@ -124,6 +127,8 @@ public class AddPost extends AppCompatActivity {
         map.put("callTime",callTime);
         map.put("costRange",costRange);
         map.put("discription",discription);
+        List<CommentModel> comments = new ArrayList<>();
+        map.put("comments",comments);
         FirebaseFirestore.getInstance().collection("posts").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {

@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="s.com.userapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UserApp">
-        <activity android:name=".MainDashboard.AddPost"></activity>
+        <activity android:name=".AdminModule.AdminMain"></activity>
+        <activity android:name=".MainDashboard.AddPost" />
         <activity android:name=".MainDashboard.Dashboard" />
         <activity android:name=".Registration.Login" />
         <activity android:name=".Registration.Register" />

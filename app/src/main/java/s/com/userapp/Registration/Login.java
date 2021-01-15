@@ -1,26 +1,36 @@
 package s.com.userapp.Registration;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import s.com.userapp.AdminModule.AdminMain;
 import s.com.userapp.MainDashboard.Dashboard;
+import s.com.userapp.MainDashboard.Model.AdminCredentials_model;
+import s.com.userapp.R;
 import s.com.userapp.databinding.ActivityLoginBinding;
 
 public class Login extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     ProgressDialog progressDialog;
+    String type="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +49,33 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        binding.rgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                int id = radioGroup.getCheckedRadioButtonId();
+                if (id == R.id.rb_admin)
+                {
+                    type="ADMIN";
+                }
+                else if (id==R.id.rb_bda)
+                {
+                    type="USER";
+                }
+            }
+        });
+
         binding.btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (type.isEmpty())
+                {
+                    Toast.makeText(Login.this, "Please Select Login Type", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String email,password;
-
                 email=binding.etEmail.getText().toString().trim();
                 password=binding.etPassword.getText().toString().trim();
-                validate(email,password);
+                validate(email,password,type);
             }
         });
 
@@ -54,7 +83,7 @@ public class Login extends AppCompatActivity {
 
     }
 
-    private void validate(String email, String password) {
+    private void validate(String email, String password,String type) {
         if (email.isEmpty())
         {
             binding.tlEmail.setError("Enter Email");
@@ -67,9 +96,49 @@ public class Login extends AppCompatActivity {
         }
         else
         {
+            if (type.equals("USER"))
+            {
             progressDialog.show();
             login(email,password);
         }
+            else
+            {
+                progressDialog.show();
+                loginAdmin(email,password);
+            }
+        }
+    }
+
+    private void loginAdmin(String email, String password) {
+        FirebaseFirestore.getInstance().collection("Admin").document("OFJsDD2O9jZDriY3GY7a").addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                progressDialog.dismiss();
+             if (error!=null)
+             {
+                 return;
+             }
+
+                AdminCredentials_model model=value.toObject(AdminCredentials_model.class);
+
+             if (model.getUserId().equals(email) && model.getPassword().equals(password))
+             {
+                 if(model.isLogin())
+                 {
+                     Toast.makeText(Login.this, "Admin Already Login..", Toast.LENGTH_SHORT).show();
+                 }
+                 else
+                 {
+                     startActivity(new Intent(Login.this, AdminMain.class));
+                 }
+             }
+             else
+             {
+                 Toast.makeText(Login.this, "User doesn't exist ", Toast.LENGTH_SHORT).show();
+             }
+
+            }
+        });
     }
 
     private void login(String email, String password) {
