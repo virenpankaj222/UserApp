@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:background="@drawable/background">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardElevation="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="12dp"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_postName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_postName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:maxLines="1"
+
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone"
+                    android:maxLines="1"
+
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_skype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Skype Id"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_skype"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_telegram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Telegram"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_telegram"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_costrange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cost Range"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/et_cost"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:maxLines="1"
+
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_callDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Call Date"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_callDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_callRange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Call Time"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_callTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:focusable="false"
+                    android:maxLines="1"
+
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_discription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Discription"
+
+                app:errorEnabled="true"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/et_discription"
+                    android:layout_height="match_parent"
+                    android:inputType="textMultiLine"
+
+                    android:lines="5"
+                    android:gravity="start"
+                    android:imeOptions="actionNext"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/button_color"
+                android:text="Update"
+                android:textAllCaps="true"
+                android:foreground="?selectableItemBackground"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.core.widget.NestedScrollView>

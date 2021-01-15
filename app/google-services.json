@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "810731506194",
+    "project_id": "bdaproject-bee5b",
+    "storage_bucket": "bdaproject-bee5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810731506194:android:d2e76ff008c11fdc7d26cb",
+        "android_client_info": {
+          "package_name": "s.com.userapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810731506194-as6it0qk676m3f75ob7lcqov6mauuv9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMacavJi1AmOlSBy4P16-iIieoGIHBaRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810731506194-as6it0qk676m3f75ob7lcqov6mauuv9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
