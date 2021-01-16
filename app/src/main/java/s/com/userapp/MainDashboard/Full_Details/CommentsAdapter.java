@@ -53,7 +53,7 @@ public class CommentsAdapter  extends RecyclerView.Adapter<CommentsAdapter.MyVie
         public void onDatabind(CommentModel model)
         {
             if(model.getUserId().equals("OFJsDD2O9jZDriY3GY7a")) {
-                binding.tvUser.setText("Me :");
+                binding.tvUser.setText("Admin :");
             }
             else
             {

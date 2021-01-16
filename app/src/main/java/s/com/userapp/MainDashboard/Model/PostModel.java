@@ -5,13 +5,13 @@ import java.util.List;
 import s.com.userapp.MainDashboard.Full_Details.CommentModel;
 
 public class PostModel {
-    String postId,userId,postTitle,name,email,phone,skypeId,telegram,callDate,callTime,costRange,discription;
+    String postId,userId,postTitle,name,email,phone,skypeId,telegram,callDate,callTime,costRange,discription,status,postedBy;
     List<CommentModel> comments;
 
     public PostModel() {
     }
 
-    public PostModel(String postId, String userId, String postTitle, String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription,List<CommentModel> comments) {
+    public PostModel(String postId, String userId, String postTitle, String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription,String status,String postedBy,List<CommentModel> comments) {
         this.postId = postId;
         this.userId = userId;
         this.postTitle = postTitle;
@@ -25,6 +25,8 @@ public class PostModel {
         this.costRange = costRange;
         this.discription = discription;
         this.comments=comments;
+        this.status=status;
+        this.postedBy=postedBy;
     }
 
     public String getPostId() {
@@ -121,6 +123,22 @@ public class PostModel {
 
     public void setDiscription(String discription) {
         this.discription = discription;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPostedBy() {
+        return postedBy;
+    }
+
+    public void setPostedBy(String postedBy) {
+        this.postedBy = postedBy;
     }
 
     public List<CommentModel> getComments() {

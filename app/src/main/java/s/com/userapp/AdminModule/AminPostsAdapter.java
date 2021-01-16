@@ -1,4 +1,4 @@
-package s.com.userapp.MainDashboard.Model;
+package s.com.userapp.AdminModule;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
+import s.com.userapp.MainDashboard.Model.PostModel;
+import s.com.userapp.MainDashboard.Model.PostsAdapter;
 import s.com.userapp.MainDashboard.PostListener;
 import s.com.userapp.Utils.Constants;
 import s.com.userapp.Utils.FirestoreAdapter;
 import s.com.userapp.databinding.PostViewDetailsLayoutBinding;
 
-public class PostsAdapter extends FirestoreAdapter<PostsAdapter.MyViewHolder> {
+public class AminPostsAdapter extends FirestoreAdapter<AminPostsAdapter.MyViewHolder> {
 
     PostListener listener;
-    public PostsAdapter(Query query,PostListener listener) {
+    public AminPostsAdapter(Query query, PostListener listener) {
         super(query);
         this.listener=listener;
     }
@@ -61,7 +63,11 @@ public class PostsAdapter extends FirestoreAdapter<PostsAdapter.MyViewHolder> {
             binding.tvCast.setText("Cost : "+model.getCostRange());
             binding.callDate.setText("Date : "+model.getCallDate()+" at "+model.getCallTime());
             binding.tvDiscription.setText(model.getDiscription());
+            binding.tvPostby.setText("Post By : "+model.getPostedBy());
+            binding.tvPostby.setVisibility(View.VISIBLE);
+            binding.viewPby.setVisibility(View.VISIBLE);
             binding.tvStatus.setText(model.getStatus());
+            binding.ivDelete.setVisibility(View.VISIBLE);
 
             if(model.getStatus().equals(Constants.converted))
             {
@@ -89,6 +95,13 @@ public class PostsAdapter extends FirestoreAdapter<PostsAdapter.MyViewHolder> {
                 @Override
                 public void onClick(View view) {
                     listener.onStatusChange(model);
+                }
+            });
+
+            binding.ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onDelete(model);
                 }
             });
         }

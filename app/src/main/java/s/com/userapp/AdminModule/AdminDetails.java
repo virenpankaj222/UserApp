@@ -1,5 +1,6 @@
 package s.com.userapp.AdminModule;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import s.com.userapp.MainDashboard.Full_Details.CommentModel;
 import s.com.userapp.MainDashboard.Full_Details.CommentsAdapter;
 import s.com.userapp.MainDashboard.Model.PostModel;
 import s.com.userapp.R;
+import s.com.userapp.Utils.Constants;
 import s.com.userapp.databinding.FragmentAdminDetailsBinding;
 import s.com.userapp.databinding.FragmentAdminHomeBinding;
 
@@ -120,6 +122,16 @@ public class AdminDetails extends Fragment {
                 binding.tvCast.setText("Cost : "+model.getCostRange());
                 binding.callDate.setText("Date : "+model.getCallDate()+" at "+model.getCallTime());
                 binding.tvDiscription.setText(model.getDiscription());
+                binding.tvStatus.setText(model.getStatus());
+
+                if(model.getStatus().equals(Constants.converted))
+                {
+                    binding.tvStatus.setBackgroundColor(Color.parseColor("#067841"));
+                }
+                else {
+                    binding.tvStatus.setBackgroundColor(Color.parseColor("#ff6516"));
+
+                }
 
                 binding.rvComment.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
                 binding.rvComment.setAdapter(new CommentsAdapter(getReverseComment(model.getComments())));

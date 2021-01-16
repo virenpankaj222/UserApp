@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import s.com.userapp.AdminModule.AdminMain;
 import s.com.userapp.MainDashboard.Dashboard;
 import s.com.userapp.R;
 import s.com.userapp.Registration.Login;
@@ -25,8 +26,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (FirebaseAuth.getInstance().getCurrentUser()==null) {
-                    startActivity(new Intent(MainActivity.this, Login.class));
-                    finish();
+                    if (!getSharedPreferences("userData",MODE_PRIVATE).getBoolean("login",false)) {
+                        startActivity(new Intent(MainActivity.this, Login.class));
+                        finish();
+                    }
+                    else
+                    {
+                        startActivity(new Intent(MainActivity.this, AdminMain.class));
+                        finish();
+
+                    }
                 }
                 else
                 {

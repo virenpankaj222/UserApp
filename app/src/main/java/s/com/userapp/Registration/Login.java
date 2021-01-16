@@ -110,35 +110,43 @@ public class Login extends AppCompatActivity {
     }
 
     private void loginAdmin(String email, String password) {
-        FirebaseFirestore.getInstance().collection("Admin").document("OFJsDD2O9jZDriY3GY7a").addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        FirebaseFirestore.getInstance().collection("Admin").document("OFJsDD2O9jZDriY3GY7a").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+            public void onSuccess(DocumentSnapshot snapshot) {
+
                 progressDialog.dismiss();
-             if (error!=null)
-             {
-                 return;
-             }
 
-                AdminCredentials_model model=value.toObject(AdminCredentials_model.class);
+                AdminCredentials_model model=snapshot.toObject(AdminCredentials_model.class);
 
-             if (model.getUserId().equals(email) && model.getPassword().equals(password))
-             {
-                 if(model.isLogin())
-                 {
-                     Toast.makeText(Login.this, "Admin Already Login..", Toast.LENGTH_SHORT).show();
-                 }
-                 else
-                 {
-                     startActivity(new Intent(Login.this, AdminMain.class));
-                 }
-             }
-             else
-             {
-                 Toast.makeText(Login.this, "User doesn't exist ", Toast.LENGTH_SHORT).show();
-             }
+                if (model.getUserId().equals(email) && model.getPassword().equals(password))
+                {
+                    if(model.isLogin())
+                    {
+                        Toast.makeText(Login.this, "Admin Already Login..", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        getSharedPreferences("userData",MODE_PRIVATE).edit().putBoolean("login",true).commit();
+                        FirebaseFirestore.getInstance().collection("Admin").document("OFJsDD2O9jZDriY3GY7a").update("login",true);
 
+                        startActivity(new Intent(Login.this, AdminMain.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        finish();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(Login.this, "User doesn't exist ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(Login.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void login(String email, String password) {

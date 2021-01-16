@@ -126,16 +126,12 @@ public class AdminUpdate extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseFirestore.getInstance().collection("posts").document(mParam1).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        FirebaseFirestore.getInstance().collection("posts").document(mParam1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error!=null)
-                {
-                    return;
-                }
+            public void onSuccess(DocumentSnapshot snapshot) {
 
-                PostModel model=value.toObject(PostModel.class);
-                model.setPostId(value.getId());
+                PostModel model=snapshot.toObject(PostModel.class);
+                model.setPostId(snapshot.getId());
 
                 binding.etPostName.setText(model.getPostTitle());
                 binding.etName.setText(model.getName());
@@ -189,14 +185,7 @@ public class AdminUpdate extends Fragment {
 
     private void updatePost(String postTitle,String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription) {
 
-        if(FirebaseAuth.getInstance().getCurrentUser()==null)
-        {
-            startActivity(new Intent(getContext(), Login.class));
-            return;
-        }
-
         Map<String, String> map=new HashMap<>();
-        map.put("userId",FirebaseAuth.getInstance().getCurrentUser().getUid());
         map.put("postTitle",postTitle);
         map.put("name",name);
         map.put("email",email);
@@ -212,7 +201,7 @@ public class AdminUpdate extends Fragment {
             public void onSuccess(Void aVoid) {
                 progressDialog.dismiss();
                 NavHostFragment.findNavController(AdminUpdate.this)
-                        .navigate(R.id.action_updatetoHome);
+                        .navigate(R.id.action_adminupdatetoadminHome);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

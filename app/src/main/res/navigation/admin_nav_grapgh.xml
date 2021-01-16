@@ -2,44 +2,43 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/homefragment">
+    android:id="@+id/admin_nav_graph"
+    app:startDestination="@id/adminhomefragment">
 
     <fragment
-        android:id="@+id/homefragment"
+        android:id="@+id/adminhomefragment"
         android:name="s.com.userapp.AdminModule.AdminHome"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_admin_home">
         <action
             android:id="@+id/action_homeToDetails"
-            app:destination="@id/details_fragment" />
+            app:destination="@id/admindetails_fragment" />
         <action
-            android:id="@+id/action_update"
-            app:destination="@+id/update_fragment"
+            android:id="@+id/action_adminhomeToadminupdate"
+            app:destination="@+id/adminupdate_fragment"
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"/>
     </fragment>
 
 
     <fragment
-        android:id="@+id/details_fragment"
+        android:id="@+id/admindetails_fragment"
         android:name="s.com.userapp.AdminModule.AdminDetails"
         android:label="@string/details"
-        tools:layout="@layout/fragment_details">
+        tools:layout="@layout/fragment_admin_details">
 
         <action
-            android:id="@+id/action_detailsToHome"
-            app:destination="@id/homefragment" />
+            android:id="@+id/action_admindetailsToadminHome"
+            app:destination="@id/adminhomefragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/update_fragment"
-        android:name="s.com.userapp.MainDashboard.UpdateFragment"
+        android:id="@+id/adminupdate_fragment"
+        android:name="s.com.userapp.AdminModule.AdminUpdate"
         android:label="@string/update"
-        tools:layout="@layout/fragment_update">
-
+        tools:layout="@layout/fragment_admin_update">
         <action
-            android:id="@+id/action_updatetoHome"
-            app:destination="@id/homefragment" />
+            android:id="@+id/action_adminupdatetoadminHome"
+            app:destination="@id/adminhomefragment" />
     </fragment>
 </navigation>

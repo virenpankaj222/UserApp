@@ -85,6 +85,13 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getContext(),AddPost.class));
             }
         });
+
+        binding.tvMyHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(),UserHistory.class));
+            }
+        });
         return binding.getRoot();
     }
 
@@ -160,6 +167,16 @@ public class HomeFragment extends Fragment {
 
 //            NavHostFragment.findNavController(HomeFragment.this)
 //                    .navigate(R.id.action_update);
+        }
+
+        @Override
+        public void onDelete(PostModel model) {
+
+        }
+
+        @Override
+        public void onStatusChange(PostModel model) {
+
         }
     };
 

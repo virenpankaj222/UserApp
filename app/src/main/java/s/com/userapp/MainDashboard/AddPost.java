@@ -28,6 +28,7 @@ import java.util.Map;
 
 import s.com.userapp.MainDashboard.Full_Details.CommentModel;
 import s.com.userapp.Registration.Login;
+import s.com.userapp.Utils.Constants;
 import s.com.userapp.databinding.ActivityAddPostBinding;
 
 public class AddPost extends AppCompatActivity {
@@ -127,6 +128,8 @@ public class AddPost extends AppCompatActivity {
         map.put("callTime",callTime);
         map.put("costRange",costRange);
         map.put("discription",discription);
+        map.put("status", Constants.under_review);
+        map.put("postedBy",FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         List<CommentModel> comments = new ArrayList<>();
         map.put("comments",comments);
         FirebaseFirestore.getInstance().collection("posts").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-         android:id="@+id/exit"
+        android:id="@+id/exit"
         android:title="EXIT"
         app:showAsAction="always"
         android:iconTint="@color/white"
@@ -12,10 +12,9 @@
         android:title="PASSWORD"
         android:iconTint="@color/white"
         app:showAsAction="always"
-        android:visible="false"
         android:icon="@drawable/ic_baseline_lock_24"/>
 
-        />
+    />
 
 
 </menu>

@@ -6,12 +6,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/pms"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/pms"
         android:supportsRtl="true"
         android:theme="@style/Theme.UserApp">
-        <activity android:name=".AdminModule.AdminMain"></activity>
+        <activity android:name=".MainDashboard.UserHistory"></activity>
+        <activity android:name=".AdminModule.Admin_History" />
+        <activity android:name=".AdminModule.AdminMain" />
         <activity android:name=".MainDashboard.AddPost" />
         <activity android:name=".MainDashboard.Dashboard" />
         <activity android:name=".Registration.Login" />

@@ -1,5 +1,7 @@
 package s.com.userapp.AdminModule;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,10 +21,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import s.com.userapp.MainDashboard.Model.PostModel;
 import s.com.userapp.MainDashboard.Model.PostsAdapter;
 import s.com.userapp.MainDashboard.PostListener;
 import s.com.userapp.R;
+import s.com.userapp.Utils.Constants;
 import s.com.userapp.databinding.FragmentAdminHomeBinding;
 
 /**
@@ -39,8 +47,10 @@ public class AdminHome extends Fragment {
     private String mParam1;
     private String mParam2;
     Query query;
-    PostsAdapter adapter;
+    AminPostsAdapter adapter;
     FragmentAdminHomeBinding binding;
+    List<String> status=new ArrayList<>();
+    String statusChange;
     public AdminHome() {
         // Required empty public constructor
     }
@@ -77,6 +87,18 @@ public class AdminHome extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding=FragmentAdminHomeBinding.inflate(inflater,container,false);
+        status.clear();
+        status.add(Constants.under_review);
+        status.add(Constants.converted);
+        status.add(Constants.not_converted);
+        status.add(Constants.under_disscusssion);
+        status.add(Constants.not_interested);
+        binding.tvMyHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(),Admin_History.class));
+            }
+        });
         return binding.getRoot();
     }
 
@@ -107,7 +129,7 @@ public class AdminHome extends Fragment {
             Log.w("TAG", "No query, not initializing RecyclerView");
         }
 
-        adapter = new PostsAdapter(query,listener) {
+        adapter = new AminPostsAdapter(query,listener) {
 
             @Override
             protected void onDataChanged() {
@@ -148,11 +170,67 @@ public class AdminHome extends Fragment {
 
             Bundle bundle = new Bundle();
             bundle.putString("postId", model.getPostId());
-            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_update, bundle);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_adminhomeToadminupdate, bundle);
 
 //            NavHostFragment.findNavController(HomeFragment.this)
 //                    .navigate(R.id.action_update);
         }
-    };
 
+        @Override
+        public void onDelete(PostModel model) {
+            FirebaseFirestore.getInstance().collection("posts").document(model.getPostId()).delete();
+
+        }
+
+        @Override
+        public void onStatusChange(PostModel model) {
+            showFilterView(model);
+
+        }
+    };
+    public void showFilterView(PostModel model)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        s.com.userapp.databinding.FilterDialogeBinding binding;
+        binding= s.com.userapp.databinding.FilterDialogeBinding.inflate(LayoutInflater.from(getContext()),null,false);
+        builder.setView(binding.getRoot());
+        ArrayAdapter statusAdapter=new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,status);
+        binding.spinnerStatus.setAdapter(statusAdapter);
+
+        binding.spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                statusChange=status.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        binding.tvApply.setText("Update");
+        binding.tvClear.setText("Cancel");
+        binding.tvApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseFirestore.getInstance().collection("posts").document(model.getPostId()).update("status",statusChange);
+                alertDialog.dismiss();
+            }
+        });
+
+        binding.tvClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                alertDialog.dismiss();
+
+            }
+        });
+
+
+        alertDialog.show();
+    }
 }
