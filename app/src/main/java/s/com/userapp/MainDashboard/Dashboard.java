@@ -10,7 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import s.com.userapp.R;
 import s.com.userapp.Registration.Login;
@@ -40,7 +44,7 @@ public class Dashboard extends AppCompatActivity {
             return;
         }
 
-
+        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("deviceId",getSharedPreferences("TokenID",MODE_PRIVATE).getString("tokenId",""));
     }
 
     @Override

@@ -3,6 +3,7 @@ package s.com.userapp.MainDashboard;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.nsd.NsdManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.SetOptions;
 
 import java.math.BigInteger;
@@ -56,6 +58,7 @@ public class UpdateFragment extends Fragment {
     FragmentUpdateBinding binding;
     String callTime="";
     ProgressDialog progressDialog;
+    ListenerRegistration registration;
 
 
     public UpdateFragment() {
@@ -119,7 +122,7 @@ public class UpdateFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseFirestore.getInstance().collection("posts").document(mParam1).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        registration=FirebaseFirestore.getInstance().collection("posts").document(mParam1).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
              if (error!=null)
@@ -180,7 +183,16 @@ public class UpdateFragment extends Fragment {
 
     }
 
-    private void updatePost(String postTitle,String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription) {
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (registration!=null)
+        {
+            registration.remove();
+        }
+    }
+
+    private void updatePost(String postTitle, String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription) {
 
         if(FirebaseAuth.getInstance().getCurrentUser()==null)
         {

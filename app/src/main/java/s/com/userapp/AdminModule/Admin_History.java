@@ -183,6 +183,11 @@ public class Admin_History extends AppCompatActivity {
         public void onStatusChange(PostModel model) {
 
         }
+
+        @Override
+        public void onCall(String phone) {
+
+        }
     };
 
 

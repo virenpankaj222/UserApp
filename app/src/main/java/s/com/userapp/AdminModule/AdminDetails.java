@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +33,14 @@ import s.com.userapp.R;
 import s.com.userapp.Utils.Constants;
 import s.com.userapp.databinding.FragmentAdminDetailsBinding;
 import s.com.userapp.databinding.FragmentAdminHomeBinding;
+import s.com.userapp.notification.NotificationController;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AdminDetails#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AdminDetails extends Fragment {
+public class AdminDetails extends Fragment implements NotificationController.NotificationView {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,6 +51,12 @@ public class AdminDetails extends Fragment {
     private String mParam1;
     private String mParam2;
     FragmentAdminDetailsBinding binding;
+    ListenerRegistration registration;
+    NotificationController controller;
+    String NOTIFICATION_TITLE;
+    String NOTIFICATION_MESSAGE;
+    String TOPIC;
+    PostModel model;
 
     public AdminDetails() {
         // Required empty public constructor
@@ -81,6 +93,7 @@ public class AdminDetails extends Fragment {
                              Bundle savedInstanceState) {
 
         binding=FragmentAdminDetailsBinding.inflate(inflater,container,false);
+        controller=new NotificationController(getContext(),this);
         binding.ivSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,9 +103,27 @@ public class AdminDetails extends Fragment {
                     return;
                 }
 
-                CommentModel model=new CommentModel(getSaltString(),"OFJsDD2O9jZDriY3GY7a",binding.etComment.getText().toString().trim(),"Admin");
+                CommentModel modelComment=new CommentModel(getSaltString(),"OFJsDD2O9jZDriY3GY7a",binding.etComment.getText().toString().trim(),"Admin");
+                FirebaseFirestore.getInstance().collection("posts").document(mParam1).update("comments", FieldValue.arrayUnion(modelComment));
+                TOPIC = "/topics/"+model.getPostId(); //topic has to match what the receiver subscribed to
+                NOTIFICATION_TITLE = model.getPostTitle();
+                NOTIFICATION_MESSAGE = binding.etComment.getText().toString().trim();
                 binding.etComment.setText("");
-                FirebaseFirestore.getInstance().collection("posts").document(mParam1).update("comments", FieldValue.arrayUnion(model));
+
+                JSONObject notification = new JSONObject();
+                JSONObject notifcationBody = new JSONObject();
+                try {
+                    notifcationBody.put("title", NOTIFICATION_TITLE);
+                    notifcationBody.put("message", NOTIFICATION_MESSAGE);
+                    notification.put("to", TOPIC);
+                    notification.put("data", notifcationBody);
+                } catch (JSONException e) {
+                    Log.e("notificationjsonksddnfi", "onCreate: " + e.getMessage() );
+                }
+
+                Log.d("notificationjsonksddnfi",""+notification);
+                controller.sendNotification(notification);
+
             }
         });
 
@@ -102,7 +133,7 @@ public class AdminDetails extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FirebaseFirestore.getInstance().collection("posts").document(mParam1).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        registration=FirebaseFirestore.getInstance().collection("posts").document(mParam1).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(error!=null)
@@ -110,7 +141,7 @@ public class AdminDetails extends Fragment {
                     return;
                 }
 
-                PostModel model=value.toObject(PostModel.class);
+                 model=value.toObject(PostModel.class);
                 model.setPostId(value.getId());
 
                 binding.tvPostName.setText(model.getPostTitle());
@@ -141,6 +172,15 @@ public class AdminDetails extends Fragment {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(registration!=null)
+        {
+            registration.remove();
+        }
+    }
+
     private List<CommentModel> getReverseComment(List<CommentModel> commentModels)
     {
         List<CommentModel> comments=new ArrayList<>();
@@ -162,6 +202,16 @@ public class AdminDetails extends Fragment {
         }
         String saltStr = salt.toString();
         return saltStr;
+
+    }
+
+    @Override
+    public void onNotificationSend(String msg) {
+
+    }
+
+    @Override
+    public void onNotificationFail(String msg) {
 
     }
 }

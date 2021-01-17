@@ -75,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:text="Email@gmail.com"
+                    android:drawableEnd="@android:drawable/stat_sys_phone_call"
                     android:textSize="16dp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-light"

@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.Calendar;
@@ -55,6 +56,7 @@ public class AdminUpdate extends Fragment {
     FragmentAdminUpdateBinding binding;
     String callTime="";
     ProgressDialog progressDialog;
+    ListenerRegistration listenerRegistration;
     public AdminUpdate() {
         // Required empty public constructor
     }
@@ -126,12 +128,16 @@ public class AdminUpdate extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseFirestore.getInstance().collection("posts").document(mParam1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        listenerRegistration=FirebaseFirestore.getInstance().collection("posts").document(mParam1).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot snapshot) {
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error!=null)
+                {
+                    return;
+                }
 
-                PostModel model=snapshot.toObject(PostModel.class);
-                model.setPostId(snapshot.getId());
+                PostModel model=value.toObject(PostModel.class);
+                model.setPostId(value.getId());
 
                 binding.etPostName.setText(model.getPostTitle());
                 binding.etName.setText(model.getName());
@@ -183,7 +189,18 @@ public class AdminUpdate extends Fragment {
 
     }
 
-    private void updatePost(String postTitle,String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription) {
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (listenerRegistration!=null)
+        {
+            listenerRegistration.remove();
+        }
+    }
+
+    private void updatePost(String postTitle, String name, String email, String phone, String skypeId, String telegram, String callDate, String callTime, String costRange, String discription) {
 
         Map<String, String> map=new HashMap<>();
         map.put("postTitle",postTitle);

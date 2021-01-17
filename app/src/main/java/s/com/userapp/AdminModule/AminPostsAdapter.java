@@ -4,12 +4,16 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import s.com.userapp.MainDashboard.Model.PostModel;
 import s.com.userapp.MainDashboard.Model.PostsAdapter;
@@ -54,6 +58,17 @@ public class AminPostsAdapter extends FirestoreAdapter<AminPostsAdapter.MyViewHo
             PostModel model=snapshot.toObject(PostModel.class);
             model.setPostId(snapshot.getId());
 
+            FirebaseMessaging.getInstance().subscribeToTopic(snapshot.getId())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "subs";
+                            if (!task.isSuccessful()) {
+                                msg = "Fail to subbs";
+                            }
+//                        Log.d(TAG, msg);
+                        }
+                    });
             binding.tvPostName.setText(model.getPostTitle());
             binding.tvName.setText("Name : "+model.getName());
             binding.tvEmail.setText("Email : "+model.getEmail());
@@ -102,6 +117,13 @@ public class AminPostsAdapter extends FirestoreAdapter<AminPostsAdapter.MyViewHo
                 @Override
                 public void onClick(View view) {
                     listener.onDelete(model);
+                }
+            });
+
+            binding.tvphone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onCall(model.getPhone());
                 }
             });
         }

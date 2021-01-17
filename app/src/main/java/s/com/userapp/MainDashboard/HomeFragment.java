@@ -178,6 +178,11 @@ public class HomeFragment extends Fragment {
         public void onStatusChange(PostModel model) {
 
         }
+
+        @Override
+        public void onCall(String phone) {
+
+        }
     };
 
 }

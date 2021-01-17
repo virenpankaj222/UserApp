@@ -164,6 +164,11 @@ public class UserHistory extends AppCompatActivity {
         public void onStatusChange(PostModel model) {
 
         }
+
+        @Override
+        public void onCall(String phone) {
+
+        }
     };
 
 

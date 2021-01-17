@@ -7,4 +7,5 @@ public interface PostListener {
     void onEdit(PostModel model);
     void onDelete(PostModel model);
     void onStatusChange(PostModel model);
+    void onCall(String phone);
 }

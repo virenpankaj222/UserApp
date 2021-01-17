@@ -1,16 +1,17 @@
 package s.com.userapp.MainDashboard.Model;
 
 public class AdminCredentials_model {
-    String userId,password;
+    String userId,password,deviceId;
     boolean login;
 
     public AdminCredentials_model() {
     }
 
-    public AdminCredentials_model(String userId, String password, boolean login) {
+    public AdminCredentials_model(String userId, String password,String deviceId, boolean login) {
         this.userId = userId;
         this.password = password;
         this.login = login;
+        this.deviceId=deviceId;
     }
 
     public String getUserId() {
@@ -27,6 +28,14 @@ public class AdminCredentials_model {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public boolean isLogin() {

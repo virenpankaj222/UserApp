@@ -14,8 +14,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import s.com.userapp.MainDashboard.Dashboard;
 import s.com.userapp.MainDashboard.Model.PostModel;
@@ -35,6 +38,8 @@ public class AdminMain extends AppCompatActivity {
         binding=ActivityAdminMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getSupportActionBar().setTitle("Admin");
+
+        FirebaseFirestore.getInstance().collection("Admin").document("OFJsDD2O9jZDriY3GY7a").update("deviceId",getSharedPreferences("TokenID",MODE_PRIVATE).getString("tokenId",""));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

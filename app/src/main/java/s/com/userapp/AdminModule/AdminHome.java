@@ -1,25 +1,39 @@
 package s.com.userapp.AdminModule;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.karumi.dexter.BuildConfig;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +201,13 @@ public class AdminHome extends Fragment {
             showFilterView(model);
 
         }
+
+        @Override
+        public void onCall(String phone) {
+            requestMultiplePermissions(phone);
+            
+
+        }
     };
     public void showFilterView(PostModel model)
     {
@@ -233,4 +254,59 @@ public class AdminHome extends Fragment {
 
         alertDialog.show();
     }
+
+    private void  requestMultiplePermissions(String phone){
+        Dexter.withActivity(getActivity())
+                .withPermissions(Manifest.permission.CALL_PHONE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
+                            startActivity(intent);
+                            return;
+                        }
+
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            final androidx.appcompat.app.AlertDialog.Builder builder;
+                            builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+                            builder.setMessage("Permission Denied") .setTitle("Storage Permission");
+
+                            builder .setCancelable(false)
+                                    .setPositiveButton("Give permission", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
+                                            dialog.cancel();
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            //  Action for 'NO' Button
+                                            dialog.cancel();
+
+                                        }
+                                    });
+                            androidx.appcompat.app.AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        Toast.makeText(getContext(), "Some Error! ", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
+    }
+
 }
